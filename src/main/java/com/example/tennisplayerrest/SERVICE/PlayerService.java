@@ -1,9 +1,9 @@
 package com.example.tennisplayerrest.SERVICE;
 
 import com.example.tennisplayerrest.ENTITY.Player;
+import com.example.tennisplayerrest.CUSTOM_EXCEPTION.PlayerNotFoundException;
 import com.example.tennisplayerrest.REPOSITORY.PlayerRepository;
 import jakarta.transaction.Transactional;
-import org.apache.el.util.ReflectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -31,7 +31,7 @@ public class PlayerService {
             p = teamPlayer.get();
         }
         else{
-            throw new RuntimeException("Player with id" +id+ "not found");
+            throw new PlayerNotFoundException("Player with id" +id+ "not found");
         }
         return p;
     }
@@ -42,7 +42,7 @@ public class PlayerService {
         Optional<Player> tempPlayer = playerRepository.findById(id);
 
         if(tempPlayer.isEmpty())
-            throw new RuntimeException("Player with id {"+ id +"} not found");
+            throw new PlayerNotFoundException("Player with id {"+ id +"} not found");
 
         p.setId(id);
         return playerRepository.save(p);
@@ -57,7 +57,7 @@ public class PlayerService {
             });
             }
         else{
-              throw new RuntimeException("Player not found");
+              throw new PlayerNotFoundException("Player not found");
         }
         return  playerRepository.save(player.get());
     }
@@ -65,7 +65,7 @@ public class PlayerService {
     public void updateTitles(int id, int titles){
        Optional<Player> player = playerRepository.findById(id);
       if(player.isEmpty()){
-           throw new RuntimeException("Player title can cot be updated");
+           throw new PlayerNotFoundException("Player title can cot be updated");
         }
         playerRepository.updateTitles(id,titles);
    }
@@ -73,7 +73,7 @@ public class PlayerService {
     public void deletePlayer(int id){
         Optional<Player> teamPlayer = playerRepository.findById(id);
         if(teamPlayer.isEmpty())
-            throw new RuntimeException("Player with the id not found");
+            throw new PlayerNotFoundException("Player with the id not found");
         playerRepository.delete(teamPlayer.get());
     }
 }
