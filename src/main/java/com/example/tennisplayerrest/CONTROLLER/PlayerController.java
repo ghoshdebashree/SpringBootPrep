@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PlayerController {
@@ -34,6 +35,14 @@ public class PlayerController {
     @PutMapping("/updatePlayer/{id}")
     private Player updatePlayer(@RequestBody Player p, @PathVariable int id){
         return playerService.updatePlayer(id,p);
+    }
+    @PatchMapping("/updateOneField/{id}")
+    private Player updateOne(@PathVariable int id, @RequestBody Map<String, Object> patchPlayer){
+        return playerService.patch(id, patchPlayer);
+    }
+    @PatchMapping("/updateTitles/{id}/titles")
+    private void updateTitles(@PathVariable int id, @RequestBody int titles){
+        playerService.updateTitles(id,titles);
     }
     @DeleteMapping("/deletePlayer/{id}")
     private void deletePlayer(@PathVariable int id){
